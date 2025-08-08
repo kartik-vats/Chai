@@ -1,6 +1,6 @@
 import SessionWrapper from "@/components/sessionwrapper";
 import { ReactNode } from "react";
-
+import Navbar from "@/components/navbar";
 export const metadata = {
   title: "My App",
   icons: {
@@ -14,7 +14,9 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
+      <Navbar/>
       <body>
+
         {/* SessionWrapper is a client component, but it's fine here */}
         <SessionWrapper>{children}</SessionWrapper>
       </body>

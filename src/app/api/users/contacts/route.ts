@@ -10,7 +10,7 @@ console.log("Received request to get user requests:");
   const { userId } = body;
   console.log("Received request to get user requests:", body);
   const sender = await User.findOne({ id: userId })
-  .populate("contacts.user", "username image _id")
+  .populate("contacts.user", "name image")
   .select("contacts"); 
   
   console.log(sender.contacts);

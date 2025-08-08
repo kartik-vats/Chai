@@ -5,6 +5,7 @@ import React from 'react';
 
 function Notfybar() {
   const [userData, setUserData] = useState(null);
+  const [refreshKey, setRefreshKey] = useState(0);
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -12,7 +13,7 @@ function Notfybar() {
       console.log("happy valentine");
       return;
     }
-
+    
     fetch("/api/users/requests", {
       method: "POST",
       headers: {
@@ -27,9 +28,10 @@ function Notfybar() {
         setUserData(data);
       })
       .catch((err) => console.error("Failed to fetch requests", err));
-  }, [session]);
- const handleClick = (userId, reqId) => {
+  }, [session,refreshKey]);
+ const handleClick = (userId, reqId, cmd) => {
     console.log("Follow button clicked for user:", userId, "with request ID:", reqId);
+    
     fetch("/api/follow", {
       method: "PUT",
       headers: {
@@ -37,7 +39,8 @@ function Notfybar() {
       },
       body: JSON.stringify({ 
         userId: userId,
-        reqId: reqId
+        reqId: reqId,
+        cmd: cmd
       }),
     })
       .then((res) => res.json())
@@ -46,6 +49,8 @@ function Notfybar() {
         // Optionally, you can update the UI or state here
       })
       .catch((err) => console.error("Failed to follow user", err));
+      setRefreshKey(prev => prev + 1);
+      
   };
   return (
     <div>
@@ -65,9 +70,15 @@ function Notfybar() {
                   className="w-10 h-10 rounded-full"
                 />
                 <span className="text-md font-medium">{reqUser.name}hello{reqUser.id}</span>
-                <button className="ml-auto bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600" onClick={() =>  handleClick(session?.user?.providerAccountId,reqUser.id)
+                <button className="ml-auto bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600" onClick={() =>  handleClick(session?.user?.providerAccountId,reqUser.id,"accept")
+                
                 }>
                   Accept
+                </button>
+                 <button className="ml-auto bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600" onClick={() =>  handleClick(session?.user?.providerAccountId,reqUser.id,"reject")
+                
+                }>
+                  Reject
                 </button>
               </div>
             ))
