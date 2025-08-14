@@ -29,7 +29,7 @@ export default function ChatArea({ chatId }: Props) {
   
 
     fetch('/api/socket');
-  socket = io();
+  socket = io('https://vercel.com/kartik-vats-projects/chai/7wVWsdjFpXwiHV8HkwsAAN8945t4');
 socket.on('connect', () => {
   console.log('✅ Socket connected:', socket.id);
 });
